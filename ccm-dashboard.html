@@ -572,6 +572,93 @@ $(document).ready(function() {
 
     $('#close-sidebar-x-btn, #sidebar-shadow').on('click', closeSidebar);
 
+         const DEMO_UNIT_RECORD = {
+        'CAA377239': {
+            roNumber: 'CAA377239',
+            serialNumber: '21330523021188',
+            partNumber: 'TC210K-01A422-05',
+            sparePool: 'N/A',
+            accessories: 'N/A',
+            disposition: 'Defective',
+            process: 'Received Defective',
+            transferStatus: 'N/A',
+            batteryRma: 'N/A',
+            batteryUnit: 'N/A',
+            receivingRma: '201211941-97',
+            rmaType: 'Repair And Return',
+            repairDueDate: '7/15/26',
+            customerComplaints: 'Unspecified',
+            instructions: 'N/A',
+            instructionsReason: 'N/A',
+            receivingNotes: 'N/A',
+            shippingRma: '201211941-97',
+            shippingDueDate: '7/15/26',
+            jobType: 'Contract'
+        }
+    };
+ 
+    function renderUnitSummaryCardHtml(d) {
+        return (
+            '<div class="info-grid" style="display:grid; grid-template-columns:repeat(2,1fr); gap:0 20px;">' +
+                '<div style="padding-bottom:10px; border-bottom:1px solid #f0f0f0; margin-bottom:10px;">' +
+                    '<p style="margin:0 0 8px;"><strong>RO #</strong>: <span>' + escapeHtml(d.roNumber) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Serial #</strong>: <a href="#/asset/0" style="color:#3c8dbc;">' + escapeHtml(d.serialNumber) + '</a></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Part #</strong>: <span>' + escapeHtml(d.partNumber) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Spare Pool #</strong>: <span>' + escapeHtml(d.sparePool) + '</span></p>' +
+                    '<p style="margin:0;"><strong>Accessories</strong>: <span>' + escapeHtml(d.accessories) + '</span></p>' +
+                '</div>' +
+                '<div style="padding-bottom:10px; border-bottom:1px solid #f0f0f0; margin-bottom:10px;">' +
+                    '<p style="margin:0 0 8px;"><strong>Disposition</strong>: <span>' + escapeHtml(d.disposition) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Process</strong>: <span>' + escapeHtml(d.process) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Transfer Status</strong>: <span>' + escapeHtml(d.transferStatus) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Battery/Unit RMA</strong>: <span>' + escapeHtml(d.batteryRma) + '</span></p>' +
+                    '<p style="margin:0;"><strong>Battery/Unit</strong>: <span>' + escapeHtml(d.batteryUnit) + '</span></p>' +
+                '</div>' +
+                '<div style="padding-bottom:10px; border-bottom:1px solid #f0f0f0; margin-bottom:10px;">' +
+                    '<p style="margin:0 0 8px;"><strong>Receiving RMA #</strong>: <span>' + escapeHtml(d.receivingRma) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>RMA Type</strong>: <span>' + escapeHtml(d.rmaType) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Repair Due Date</strong>: <span>' + escapeHtml(d.repairDueDate) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Customer Complaints</strong>: <span>' + escapeHtml(d.customerComplaints) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Instructions</strong>: <span>' + escapeHtml(d.instructions) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Instructions Reason</strong>: <span>' + escapeHtml(d.instructionsReason) + '</span></p>' +
+                    '<p style="margin:0;"><strong>Receiving Notes</strong>: <span>' + escapeHtml(d.receivingNotes) + '</span></p>' +
+                '</div>' +
+                '<div>' +
+                    '<p style="margin:0 0 8px;"><strong>Shipping RMA #</strong>: <span>' + escapeHtml(d.shippingRma) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>RMA Type</strong>: <span>' + escapeHtml(d.rmaType) + '</span></p>' +
+                    '<p style="margin:0 0 8px;"><strong>Due Date</strong>: <span>' + escapeHtml(d.shippingDueDate) + '</span></p>' +
+                    '<p style="margin:0;"><strong>Job Type</strong>: <span>' + escapeHtml(d.jobType) + '</span></p>' +
+                '</div>' +
+            '</div>' +
+            '<div style="margin-top:12px; padding-top:10px; border-top:1px dashed #e2e8f0; font-size:12px; color:#94a3b8;">' +
+                'Demo data — sample record for RO # CAA377239, not a live asset lookup.' +
+            '</div>'
+        );
+    }
+ 
+    function runUnitSummaryDemoLookup() {
+        const query = $('#unit-summary-lookup-input').val().trim().toUpperCase();
+        if (!query) return;
+ 
+        const record = DEMO_UNIT_RECORD[query];
+        if (record) {
+            openSidebar('Unit Summary', renderUnitSummaryCardHtml(record));
+        } else {
+            openSidebar('Unit Summary',
+                '<div style="text-align:center; padding:30px 10px; color:#64748b;">' +
+                    '<i class="fa fa-search" style="font-size:26px; margin-bottom:10px; display:block; color:#94a3b8;"></i>' +
+                    '<div style="font-weight:600; margin-bottom:4px;">No demo record for "' + escapeHtml(query) + '"</div>' +
+                    '<div style="font-size:13px;">This is a demo — try RO # <strong>CAA377239</strong> to see a sample Unit Summary card.</div>' +
+                '</div>'
+            );
+        }
+    }
+ 
+    $('#unit-summary-lookup-btn').on('click', runUnitSummaryDemoLookup);
+    $('#unit-summary-lookup-input').on('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); runUnitSummaryDemoLookup(); }
+    });
+
     // ─── ADMIN MODE ACTIVE ON LOAD ────────────────────────────────────────────
     $('#open-create-panel-btn').show();
 
